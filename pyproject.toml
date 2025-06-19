@@ -18,7 +18,32 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 package-mode = false
 
+[tool.black]
+line-length = 88
+target-version = ["py39"]
+
+[tool.isort]
+# Use the Black-compatible profile so imports format nicely alongside Black
+profile = "black"
+# Match Black’s line length
+line_length = 88
+# Ensure trailing commas for multi-line imports
+include_trailing_comma = true
+# Combine “from x import a, b” where possible
+combine_as_imports = true
+# Force imports to wrap in grid style once they exceed the line length
+multi_line_output = 3
+# Skip sorting __init__.py if you prefer
+skip = ["__init__.py"]
+# You can also group your own first-party packages, e.g.:
+# known_first_party = ["my_package"]
+
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
 pytest-mock = "^3.14.1"
+flake8 = "^7.2.0"
+pylint = "^3.3.7"
+black = "^25.1.0"
+isort = "^6.0.1"
+mypy = "^1.16.1"
 

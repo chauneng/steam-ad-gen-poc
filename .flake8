@@ -1,0 +1,26 @@
+[flake8]
+max-line-length = 88
+extend-ignore = E203, W503
+exclude =
+    .git,
+    __pycache__,
+    build,
+    dist
+    .tox,
+    .venv,
+    .env,
+    .vscode,
+    .idea,
+    .eggs,
+    .cache,
+    .ipynb_checkpoints
+    .pytest_cache,
+    .coverage,
+    .coverage.*
+    .hypothesis,
+    .ropeproject,
+    .mypy_cache,
+    .ruff_cache,
+    .pytest_cache,
+
+# This configuration file is for Flake8, a tool for checking the style guide enforcement in Python code.

@@ -3,3 +3,12 @@ __pycache__/
 .env
 .venv/
 .prefect/
+
+# Local environment files
+.vscode/
+.flake8
+.pylintrc
+
+# Cache files
+.cache/
+.pytest_cache/
