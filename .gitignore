@@ -1,14 +1,17 @@
-__pycache__/
+# This is a sample .gitignore file for a Python project
+
+# Python bytecode files
 *.py[cod]
-.env
-.venv/
-.prefect/
 
 # Local environment files
 .vscode/
 .flake8
 .pylintrc
+.env
+.venv/
+.prefect/
 
 # Cache files
-.cache/
+__pycache__/
 .pytest_cache/
+.cache/
