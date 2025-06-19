@@ -3,6 +3,9 @@
 # Python bytecode files
 *.py[cod]
 
+# Backup files
+*.bak
+
 # Local environment files
 .vscode/
 .flake8
