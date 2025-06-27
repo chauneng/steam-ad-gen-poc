@@ -22,3 +22,6 @@ __pycache__/
 
 # temporary files
 .hypothesis/
+
+# Local configuration files
+local.*
