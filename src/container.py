@@ -7,14 +7,5 @@ class Container(containers.DeclarativeContainer):
     """Simple Container for Dependency Injection."""
 
     # Configuration provider
-    config = providers.Configuration(json_files=["local.config.json"])
-    config.load()
+    config = providers.Configuration()
 
-
-if __name__ == "__main__":
-    # Testing the container setup
-    container = Container()
-    # Load the configuration
-    cfg = container.config()
-    # Accessing a specific configuration value
-    print(cfg["database"]["host"])
