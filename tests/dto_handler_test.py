@@ -2,7 +2,7 @@
 
 from hypothesis import given, strategies as st
 
-from src.dto.steam_reviews import SteamReviewsResponse
+from src.dto.steam_reviews_response import SteamReviewsResponse
 
 success_strat = st.integers(min_value=0, max_value=1)
 

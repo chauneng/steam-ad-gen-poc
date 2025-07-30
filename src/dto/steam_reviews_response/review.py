@@ -8,7 +8,7 @@ from .author import Author
 class Review(BaseModel):
     """Detailed information about a single review."""
 
-    recommendationid: str
+    recommendationid: int
     author: Author
     language: str
     review: str
