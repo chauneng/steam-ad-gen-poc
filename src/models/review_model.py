@@ -18,7 +18,7 @@ class Review(CommonMixin, TimestampMixin, SoftDeleteMixin, BaseModel):
 
     recommendationid = Column(String, primary_key=True)
     game_id = Column(Integer, ForeignKey("game.id"), nullable=False)
-    author_steamid = Column(String, ForeignKey("user.steamid"), nullable=False)
+    user_id = Column(String, ForeignKey("user.id"), nullable=False)
 
     language = Column(String, nullable=False)
     review_text = Column(String, nullable=False)
@@ -34,5 +34,15 @@ class Review(CommonMixin, TimestampMixin, SoftDeleteMixin, BaseModel):
     written_during_early_access = Column(Boolean, nullable=False)
     primarily_steam_deck = Column(Boolean, nullable=False)
 
-    author = relationship("User", back_populates="reviews")
-    game = relationship("Game", back_populates="reviews")
+    user = relationship(
+        "User",
+        back_populates="reviews",
+        cascade="save-update, merge",
+        foreign_keys=[user_id],
+    )
+    game = relationship(
+        "Game",
+        back_populates="reviews",
+        cascade="save-update, merge",
+        foreign_keys=[game_id],
+    )
