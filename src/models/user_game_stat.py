@@ -12,12 +12,22 @@ class UserGameStat(CommonMixin, BaseModel):
     """
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    user_id = Column(String, ForeignKey("user.steamid"), nullable=False)
+    user_id = Column(String, ForeignKey("user.id"), nullable=False)
     game_id = Column(Integer, ForeignKey("game.id"), nullable=False)
 
     playtime_forever = Column(BigInteger, nullable=False)
     playtime_last_two_weeks = Column(BigInteger, nullable=False)
     last_played = Column(BigInteger, nullable=False)
 
-    user = relationship("User", back_populates="game_stats")
-    game = relationship("Game", back_populates="user_stats")
+    user = relationship(
+        "User",
+        back_populates="game_stats",
+        cascade="save-update, merge",
+        foreign_keys=[user_id],
+    )
+    game = relationship(
+        "Game",
+        back_populates="user_stats",
+        cascade="save-update, merge",
+        foreign_keys=[game_id],
+    )
