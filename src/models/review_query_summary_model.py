@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from src.models.base_model import BaseModel, CommonMixin, TimestampMixin
 
 
-class ReviewQueryResponse(CommonMixin, TimestampMixin, BaseModel):
+class ReviewQuerySummary(CommonMixin, TimestampMixin, BaseModel):
     """Model for storing Steam review responses query summaries."""
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -21,6 +21,6 @@ class ReviewQueryResponse(CommonMixin, TimestampMixin, BaseModel):
 
     game = relationship(
         "Game",
-        back_populates="review_query_responses",
+        back_populates="review_query_summaries",
         cascade="save-update, merge",
     )
