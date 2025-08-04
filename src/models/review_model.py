@@ -16,7 +16,7 @@ class Review(CommonMixin, TimestampMixin, SoftDeleteMixin, BaseModel):
     Represents a Steam review for a game.
     """
 
-    recommendationid = Column(String, primary_key=True)
+    id = Column(String, primary_key=True)
     game_id = Column(Integer, ForeignKey("game.id"), nullable=False)
     user_id = Column(String, ForeignKey("user.id"), nullable=False)
 
