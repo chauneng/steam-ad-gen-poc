@@ -1,6 +1,7 @@
 """Base model for all database models using SQLAlchemy ORM with PostgreSQL."""
 
-from sqlalchemy import TIMESTAMP, Column, text
+from sqlalchemy import Column, text
+from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.orm import DeclarativeBase, declared_attr
 
 
@@ -14,6 +15,7 @@ class CommonMixin:
     """
     CommonMixin provides automatic table naming.
     """
+
     __abstract__ = True
 
     @declared_attr
@@ -26,6 +28,7 @@ class TimestampMixin:
     TimestampMixin adds created_at and updated_at fields,
     managed at the database level using NOW().
     """
+
     __abstract__ = True
 
     created_at = Column(
@@ -45,6 +48,7 @@ class SoftDeleteMixin:
     """
     SoftDeleteMixin adds a deleted_at field for soft deletion.
     """
+
     __abstract__ = True
 
     deleted_at = Column(

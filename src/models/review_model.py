@@ -16,14 +16,12 @@ class Review(CommonMixin, TimestampMixin, SoftDeleteMixin, BaseModel):
     Represents a Steam review for a game.
     """
 
-    id = Column(String, primary_key=True)
-    game_id = Column(Integer, ForeignKey("game.id"), nullable=False)
-    user_id = Column(String, ForeignKey("user.id"), nullable=False)
+    id = Column(BigInteger, primary_key=True)
+    game_id = Column(BigInteger, ForeignKey("game.id"), nullable=False)
+    user_id = Column(BigInteger, ForeignKey("user.id"), nullable=False)
 
     language = Column(String, nullable=False)
-    review_text = Column(String, nullable=False)
-    timestamp_created = Column(BigInteger, nullable=False)
-    timestamp_updated = Column(BigInteger, nullable=False)
+    text = Column(String, nullable=False)
     voted_up = Column(Boolean, nullable=False)
     votes_up = Column(Integer, nullable=False)
     votes_funny = Column(Integer, nullable=False)
