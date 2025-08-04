@@ -1,6 +1,7 @@
 """User Game Statistics Model"""
 
-from sqlalchemy import BigInteger, Column, ForeignKey, Integer, String
+from sqlalchemy import BigInteger, Column, ForeignKey
+from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.orm import relationship
 
 from src.models.base_model import BaseModel, CommonMixin
@@ -12,12 +13,13 @@ class UserGameStat(CommonMixin, BaseModel):
     """
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    user_id = Column(String, ForeignKey("user.id"), nullable=False)
-    game_id = Column(Integer, ForeignKey("game.id"), nullable=False)
+    user_id = Column(BigInteger, ForeignKey("user.id"), nullable=False)
+    game_id = Column(BigInteger, ForeignKey("game.id"), nullable=False)
 
-    playtime_forever = Column(BigInteger, nullable=False)
-    playtime_last_two_weeks = Column(BigInteger, nullable=False)
-    last_played = Column(BigInteger, nullable=False)
+    playtime_forever = Column(TIMESTAMP, nullable=False)
+    playtime_last_two_weeks = Column(TIMESTAMP, nullable=False)
+    playtime_at_review = Column(TIMESTAMP, nullable=False)
+    last_played = Column(TIMESTAMP, nullable=False)
 
     user = relationship(
         "User",

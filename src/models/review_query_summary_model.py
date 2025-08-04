@@ -1,6 +1,6 @@
 """model for storing Steam review responses query summaries."""
 
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import BigInteger, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 from src.models.base_model import BaseModel, CommonMixin, TimestampMixin
@@ -10,7 +10,7 @@ class ReviewQuerySummary(CommonMixin, TimestampMixin, BaseModel):
     """Model for storing Steam review responses query summaries."""
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    game_id = Column(Integer, ForeignKey("game.id"), nullable=False)
+    game_id = Column(BigInteger, ForeignKey("game.id"), nullable=False)
     num_reviews = Column(Integer, nullable=False)
     review_score = Column(Integer, nullable=False)
     review_score_desc = Column(String, nullable=False)

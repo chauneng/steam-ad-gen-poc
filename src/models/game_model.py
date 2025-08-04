@@ -1,6 +1,6 @@
 """Game model for Steam games."""
 
-from sqlalchemy import Column, Integer
+from sqlalchemy import BigInteger, Column
 from sqlalchemy.orm import relationship
 
 from src.models.base_model import BaseModel, CommonMixin, TimestampMixin
@@ -9,7 +9,7 @@ from src.models.base_model import BaseModel, CommonMixin, TimestampMixin
 class Game(CommonMixin, TimestampMixin, BaseModel):
     """Represents a Steam game with its metadata and reviews."""
 
-    id = Column(Integer, primary_key=True)
+    id = Column(BigInteger, primary_key=True)
 
     query_summary = relationship(
         "ReviewQuerySummary",
