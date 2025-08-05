@@ -11,7 +11,7 @@ class Game(CommonMixin, TimestampMixin, BaseModel):
 
     id = Column(BigInteger, primary_key=True)
 
-    query_summary = relationship(
+    review_query_summary = relationship(
         "ReviewQuerySummary",
         back_populates="game",
         cascade="save-update, merge",

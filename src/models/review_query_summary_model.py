@@ -1,6 +1,6 @@
 """model for storing Steam review responses query summaries."""
 
-from sqlalchemy import BigInteger, Column, Integer, String, ForeignKey
+from sqlalchemy import BigInteger, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from src.models.base_model import BaseModel, CommonMixin, TimestampMixin
@@ -21,6 +21,6 @@ class ReviewQuerySummary(CommonMixin, TimestampMixin, BaseModel):
 
     game = relationship(
         "Game",
-        back_populates="review_query_summaries",
+        back_populates="review_query_summary",
         cascade="save-update, merge",
     )
