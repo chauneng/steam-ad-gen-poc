@@ -1,12 +1,16 @@
-"""Author information for a Steam review."""
+"""Steam reviews author information."""
 
 from pydantic import BaseModel
 
 
 class Author(BaseModel):
-    """Author information for a Steam review."""
+    """
+    Detailed information about the author of a Steam review.
+    playtimes are in minutes.
+    last_played is a Unix timestamp.
+    """
 
-    steamid: str
+    steamid: int
     num_games_owned: int
     num_reviews: int
     playtime_forever: int

@@ -5,7 +5,7 @@ import sys
 
 from sqlalchemy import text
 
-# from src import scraper
+from src import scraper
 from src.container import Container
 from src.migration import run_migrations
 
@@ -15,9 +15,9 @@ if sys.platform.startswith("win"):
 
 async def main():
     """Main function for manual testing."""
-    # app_id = 570  # Example app_id for testing
-    # num_reviews = await scraper.scrape_reviews(app_id)
-    # print(f"Number of reviews gathered for app_id {app_id}: {num_reviews}")
+    app_id = 570  # Example app_id for testing
+    num_reviews = await scraper.scrape_reviews(app_id)
+    print(f"Number of reviews gathered for app_id {app_id}: {num_reviews}")
 
     # Initialize basic components
     container = Container()

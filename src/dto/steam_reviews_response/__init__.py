@@ -1,13 +1,13 @@
 """This module provides data transfer objects for Steam reviews."""
 
 from .query_summary import QuerySummary
-from .author import Author
 from .review import Review
-from .response import SteamReviewsResponse
+from .steam_review_response import SteamReviewsResponse
+from ..steam_data.user_game_stat import UserGameStat
 
 __all__ = [
     "QuerySummary",
-    "Author",
     "Review",
     "SteamReviewsResponse",
+    "UserGameStat",
 ]
