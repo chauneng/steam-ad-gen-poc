@@ -87,6 +87,21 @@ class DatabaseManager:
 
         return engine
 
+    def get_session_factory(self, alias: str) -> async_sessionmaker:
+        """
+        Retrieve a session factory by alias.
+
+        Args:
+            alias (str): The connection alias.
+
+        Returns:
+            async_sessionmaker: The session factory associated with the alias.
+        """
+        try:
+            return self.__session_factories[alias]
+        except KeyError as exc:
+            raise KeyError(f"Session factory '{alias}' does not exist.") from exc
+
     def get_connection(self, alias: str) -> Union[Engine, AsyncEngine]:
         """
         Retrieve an engine by alias.
