@@ -1,16 +1,10 @@
 """Main entry point for manual test."""
 
 import asyncio
-import sys
-
 from sqlalchemy import text
 
 from src import scraper
 from src.container import Container
-from src.migration import run_migrations
-
-if sys.platform.startswith("win"):
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
 async def main():
@@ -21,11 +15,10 @@ async def main():
 
     # Initialize basic components
     container = Container()
-    container.config.from_json("local.config.json")
+    container.config.from_json("docker.config.json")
     db_manager = container.db_manager()
     db_config = container.config.database()
     engine = db_manager.create_asynchronous_connection("default", db_config)
-    run_migrations(db_manager.create_db_url(db_config), "alembic.ini")
 
     async with engine.connect() as conn:
         result = await conn.execute(text("SELECT 1"))

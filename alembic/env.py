@@ -1,6 +1,8 @@
 """Alembic environment script."""
 
 import importlib
+import json
+import os
 import pkgutil
 from logging.config import fileConfig
 
@@ -9,6 +11,19 @@ from sqlalchemy import engine_from_config, pool
 import src.models
 from alembic import context
 from src.models.base_model import BaseModel
+
+
+def get_url():
+    # 1) 환경변수 우선
+    url = os.getenv("DATABASE_URL")
+    if url:
+        return url
+    path = os.getenv("APP_CONFIG", "config.json")
+    with open(path) as f:
+        cfg = json.load(f)
+    db = cfg["database"]
+    return f"postgresql+{db['dbapi']}://{db['user']}:{db['password']}@{db['host']}:{db['port']}/{db['name']}"
+
 
 # src/models 디렉터리 안의 모든 .py 파일을 동적 import
 for finder, name, ispkg in pkgutil.iter_modules(src.models.__path__):
