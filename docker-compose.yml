@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: test_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d test_db"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  migrate:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./local.config.json:/app/config.json:ro
+    command: >
+      bash -lc 'alembic -c alembic.ini upgrade head'
+
+  app:
+    build: .
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      - ./local.config.json:/app/config.json:ro
+    ports:
+      - "8000:8000"
+    command: bash -lc "python -m main"
+
+volumes:
+  pgdata: {}
