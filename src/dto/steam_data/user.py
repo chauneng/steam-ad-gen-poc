@@ -7,7 +7,7 @@ from .user_game_stat import UserGameStat
 
 class User(BaseModel):
     """User information for a Steam review."""
-    
+
     steamid: int
     num_games_owned: int
     num_reviews: int

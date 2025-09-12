@@ -4,6 +4,7 @@ from .review_model import Review
 from .review_query_summary_model import ReviewQuerySummary
 from .user_game_stat_model import UserGameStat
 from .user_model import User
+
 __all__ = [
     "BaseModel",
     "CommonMixin",

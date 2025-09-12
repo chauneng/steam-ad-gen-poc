@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 
 class UpsertReviewDTO(BaseModel):
     """Data Transfer Object for creating or updating a user's review."""
+
     id: int = Field(..., description="Review ID")
     user_id: int = Field(..., description="User ID")
     game_id: int = Field(..., description="Game ID")
@@ -45,4 +46,3 @@ class UpsertReviewDTO(BaseModel):
     primarily_steam_deck: Optional[bool] = Field(
         None, description="Whether the review was primarily written for Steam Deck"
     )
-

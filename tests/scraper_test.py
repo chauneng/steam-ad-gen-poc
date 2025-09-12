@@ -1,4 +1,5 @@
 """Test the review crawler functionality."""
+
 import inspect
 from src import scraper
 

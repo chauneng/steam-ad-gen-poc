@@ -1,4 +1,4 @@
-""" HTTP client for making requests and handling responses for other modules."""
+"""HTTP client for making requests and handling responses for other modules."""
 
 from typing import Optional
 

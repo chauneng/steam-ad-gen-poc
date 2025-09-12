@@ -1,7 +1,10 @@
 """Scraper module for gathering reviews from Steam API."""
 
 from . import http_client
-from .dto_handler import create_steam_review_response_dto, create_persistance_dto_from_response_dto
+from .dto_handler import (
+    create_steam_review_response_dto,
+    create_persistance_dto_from_response_dto,
+)
 
 
 async def scrape_reviews(app_id: int) -> int:
@@ -22,8 +25,7 @@ async def scrape_reviews(app_id: int) -> int:
     if response.success == 1:
         review_gathered = len(response.reviews)
         persistance_dto = create_persistance_dto_from_response_dto(
-            app_id=app_id,
-            response_dto=response
+            app_id=app_id, response_dto=response
         )
         print(f"{persistance_dto}")
 
