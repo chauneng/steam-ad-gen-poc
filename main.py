@@ -15,7 +15,7 @@ async def main():
 
     # Initialize basic components
     container = Container()
-    container.config.from_json("docker.config.json")
+    container.config.from_json("config.json")
     db_manager = container.db_manager()
     db_config = container.config.database()
     engine = db_manager.create_asynchronous_connection("default", db_config)
