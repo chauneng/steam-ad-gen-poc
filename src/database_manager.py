@@ -1,8 +1,8 @@
 """Database manager for handling database connections and operations."""
 
-from typing import Dict, List, Union
+from typing import Dict, List
 
-from sqlalchemy import URL, Engine
+from sqlalchemy import URL
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -14,12 +14,14 @@ from sqlalchemy.ext.asyncio import (
 class DatabaseManager:
     """Manager for handling database connections and operations using SQLAlchemy."""
 
-    __connections: Dict[str, Union[Engine, AsyncEngine]]
+    _connections: Dict[str, AsyncEngine]
+    _session_factories: Dict[str, async_sessionmaker[AsyncSession]]
 
-    def __init__(self):
+    def __init__(self, config: Dict[str, str] = {}) -> None:
         """Initialize the DatabaseManager."""
-        self.__connections = {}
-        self.__session_factories = {}
+        self._connections = {}
+        self._session_factories = {}
+        self.create_connection("default", config)
 
     def create_db_url(self, db_config: Dict[str, str]) -> str:
         """
@@ -43,7 +45,7 @@ class DatabaseManager:
             database=db_config["name"],
         ).render_as_string(hide_password=False)
 
-    def create_asynchronous_connection(
+    def create_connection(
         self, alias: str, db_config: Dict[str, str]
     ) -> AsyncEngine:
         """
@@ -52,7 +54,7 @@ class DatabaseManager:
         Raises:
             ValueError: If the alias already exists.
         """
-        if alias in self.__connections:
+        if alias in self._connections:
             raise ValueError(f"Connection alias '{alias}' already exists.")
 
         driver = (
@@ -74,7 +76,7 @@ class DatabaseManager:
             echo=bool(db_config.get("echo", False)),
             future=True,
         )
-        self.__connections[alias] = engine
+        self._connections[alias] = engine
 
         session_factory = async_sessionmaker(
             bind=engine,
@@ -83,11 +85,11 @@ class DatabaseManager:
             autoflush=False,
             future=True,
         )
-        self.__session_factories[alias] = session_factory
+        self._session_factories[alias] = session_factory
 
         return engine
 
-    def get_session_factory(self, alias: str) -> async_sessionmaker:
+    def get_session_factory(self, alias: str) -> async_sessionmaker[AsyncSession]:
         """
         Retrieve a session factory by alias.
 
@@ -98,11 +100,11 @@ class DatabaseManager:
             async_sessionmaker: The session factory associated with the alias.
         """
         try:
-            return self.__session_factories[alias]
+            return self._session_factories[alias]
         except KeyError as exc:
             raise KeyError(f"Session factory '{alias}' does not exist.") from exc
 
-    def get_connection(self, alias: str) -> Union[Engine, AsyncEngine]:
+    def get_connection(self, alias: str) -> AsyncEngine:
         """
         Retrieve an engine by alias.
 
@@ -110,7 +112,7 @@ class DatabaseManager:
             KeyError: If alias not found.
         """
         try:
-            return self.__connections[alias]
+            return self._connections[alias]
         except KeyError as exc:
             raise KeyError(f"Connection alias '{alias}' does not exist.") from exc
 
@@ -121,27 +123,23 @@ class DatabaseManager:
         Raises:
             KeyError: If alias not found.
         """
-        if alias not in self.__connections:
+        if alias not in self._connections:
             raise KeyError(f"Connection alias '{alias}' does not exist.")
-        engine = self.__connections.pop(alias)
-        if isinstance(engine, AsyncEngine):
-            # first close async engine
-            await engine.dispose()
-            # then dispose sync pool
-            engine.sync_engine.dispose()
-        else:
-            engine.dispose()
+        engine = self._connections.pop(alias)
+        await engine.dispose()
+        # then dispose sync pool
+        engine.sync_engine.dispose()
 
     async def dispose_all_connections(self) -> None:
         """
         Dispose all connections, awaiting async if needed.
         """
         # collect aliases to avoid mutation issues
-        aliases: List[str] = list(self.__connections.keys())
+        aliases: List[str] = list(self._connections.keys())
         for alias in aliases:
             await self.dispose_connection(alias)
 
     @property
     def aliases(self) -> List[str]:
         """List current connection aliases."""
-        return list(self.__connections.keys())
+        return list(self._connections.keys())

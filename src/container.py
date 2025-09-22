@@ -12,4 +12,4 @@ class Container(containers.DeclarativeContainer):
     config = providers.Configuration()
 
     # database provider
-    db_manager = providers.Singleton(DatabaseManager)
+    db_manager = providers.Singleton(DatabaseManager, config=config.database)

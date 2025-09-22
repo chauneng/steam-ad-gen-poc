@@ -17,8 +17,9 @@ async def main():
     container = Container()
     container.config.from_json("config.json")
     db_manager = container.db_manager()
-    db_config = container.config.database()
-    engine = db_manager.create_asynchronous_connection("default", db_config)
+
+    # Test database connection
+    engine = db_manager.get_connection("default")
 
     async with engine.connect() as conn:
         result = await conn.execute(text("SELECT 1"))
