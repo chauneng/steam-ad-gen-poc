@@ -10,6 +10,8 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
+from src.dto.config import DatabaseConfig
+
 
 class DatabaseManager:
     """Manager for handling database connections and operations using SQLAlchemy."""
@@ -17,37 +19,33 @@ class DatabaseManager:
     _connections: Dict[str, AsyncEngine]
     _session_factories: Dict[str, async_sessionmaker[AsyncSession]]
 
-    def __init__(self, config: Dict[str, str] = {}) -> None:
+    def __init__(self, config: DatabaseConfig) -> None:
         """Initialize the DatabaseManager."""
         self._connections = {}
         self._session_factories = {}
         self.create_connection("default", config)
 
-    def create_db_url(self, db_config: Dict[str, str]) -> str:
+    def create_db_url(self, db_config: DatabaseConfig) -> str:
         """
         Create a SQLAlchemy URL from the given database configuration.
 
         Args:
-            db_config (Dict[str, str]): Database configuration dictionary.
+            db_config: Database configuration.
 
         Returns:
             URL: SQLAlchemy URL object.
         """
-        driver = (
-            f"{db_config.get('type', 'postgresql')}+{db_config.get('dbapi', 'psycopg')}"
-        )
+        driver = f"{db_config.type}+{db_config.dbapi}"
         return URL.create(
             drivername=driver,
-            username=db_config["user"],
-            password=db_config["password"],
-            host=db_config.get("host", "localhost"),
-            port=int(db_config.get("port", 5432)),
-            database=db_config["name"],
+            username=db_config.user,
+            password=db_config.password,
+            host=db_config.host,
+            port=db_config.port,
+            database=db_config.name,
         ).render_as_string(hide_password=False)
 
-    def create_connection(
-        self, alias: str, db_config: Dict[str, str]
-    ) -> AsyncEngine:
+    def create_connection(self, alias: str, db_config: DatabaseConfig) -> AsyncEngine:
         """
         Create an asynchronous engine from the given configuration.
 
@@ -57,23 +55,21 @@ class DatabaseManager:
         if alias in self._connections:
             raise ValueError(f"Connection alias '{alias}' already exists.")
 
-        driver = (
-            f"{db_config.get('type', 'postgresql')}+{db_config.get('dbapi', 'psycopg')}"
-        )
+        driver = f"{db_config.type}+{db_config.dbapi}"
         url = URL.create(
             drivername=driver,
-            username=db_config["user"],
-            password=db_config["password"],
-            host=db_config.get("host", "localhost"),
-            port=int(db_config.get("port", 5432)),
-            database=db_config["name"],
+            username=db_config.user,
+            password=db_config.password,
+            host=db_config.host,
+            port=db_config.port,
+            database=db_config.name,
         )
         engine = create_async_engine(
             url,
-            pool_size=int(db_config.get("pool_size", 5)),
-            max_overflow=int(db_config.get("max_overflow", 10)),
-            pool_timeout=int(db_config.get("pool_timeout", 30)),
-            echo=bool(db_config.get("echo", False)),
+            pool_size=int(db_config.pool_size),
+            max_overflow=int(db_config.max_overflow),
+            pool_timeout=int(db_config.pool_timeout),
+            echo=bool(db_config.echo),
             future=True,
         )
         self._connections[alias] = engine
