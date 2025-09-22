@@ -3,6 +3,7 @@
 from dependency_injector import containers, providers
 
 from .database_manager import DatabaseManager
+from .http_client_manager import HttpClientManager
 
 
 class Container(containers.DeclarativeContainer):
@@ -13,3 +14,6 @@ class Container(containers.DeclarativeContainer):
 
     # database provider
     db_manager = providers.Singleton(DatabaseManager, config=config.database)
+
+    # HTTP client provider
+    http_client = providers.Singleton(HttpClientManager, config=config.http_clients)
