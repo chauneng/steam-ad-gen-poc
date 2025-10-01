@@ -9,14 +9,20 @@ from src.container import Container
 
 async def main():
     """Main function for manual testing."""
-    app_id = 570  # Example app_id for testing
-    num_reviews = await scraper.scrape_reviews(app_id)
-    print(f"Number of reviews gathered for app_id {app_id}: {num_reviews}")
-
     # Initialize basic components
     container = Container()
     container.config.from_json("config.json")
     db_manager = container.db_manager()
+
+    app_id = 570  # Example app_id for testing
+    http_client_manager = container.http_client()
+    database_manager = container.db_manager()
+
+    await scraper.scrape_reviews(
+        app_id=app_id,
+        http_manager=http_client_manager,
+        db_manager=database_manager,
+    )
 
     # Test database connection
     engine = db_manager.get_connection("default")
