@@ -17,7 +17,6 @@ class ReviewQuerySummary(CommonMixin, TimestampMixin, BaseModel):
     total_positive = Column(Integer, nullable=False)
     total_negative = Column(Integer, nullable=False)
     total_reviews = Column(Integer, nullable=False)
-    cursor = Column(String, nullable=True)
 
     game = relationship(
         "Game",

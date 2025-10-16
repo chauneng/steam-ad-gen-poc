@@ -11,6 +11,9 @@ class GameDTO(BaseModel):
     """Data Transfer Object for a game."""
 
     id: int = Field(..., description="Steam app ID")
+    recent_cursor: Optional[str] = Field(
+        None, description="Cursor for continuous fetching"
+    )
     query_summary: Optional[QuerySummary] = Field(
         None, description="Summary of reviews for the game"
     )

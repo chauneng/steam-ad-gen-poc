@@ -39,7 +39,7 @@ def create_persistance_dto_from_response_dto(
     Returns:
         UpsertResponseDTO: The persistence DTO.
     """
-    game_dto = UpsertGameDTO(id=app_id)
+    game_dto = UpsertGameDTO(id=app_id, recent_cursor=response_dto.cursor)
     query_summary = UpsertReviewQuerySummaryDTO(
         id=None,
         game_id=app_id,
@@ -49,11 +49,10 @@ def create_persistance_dto_from_response_dto(
         total_positive=response_dto.query_summary.total_positive,
         total_negative=response_dto.query_summary.total_negative,
         total_reviews=response_dto.query_summary.total_reviews,
-        cursor=response_dto.cursor,
     )
-    user_list = []
-    review_list = []
-    user_stats_list = []
+    user_list: list[UpsertUserDTO] = []
+    review_list: list[UpsertReviewDTO] = []
+    user_stats_list: list[UpsertUserGameStatsDTO] = []
     for review in response_dto.reviews:
         user = UpsertUserDTO(
             id=review.author.steamid,

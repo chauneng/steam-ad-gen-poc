@@ -22,4 +22,3 @@ class UpsertReviewQuerySummaryDTO(BaseModel):
         None, description="Number of negative reviews"
     )
     total_reviews: Optional[int] = Field(None, description="Total number of reviews")
-    cursor: Optional[str] = Field(None, description="Cursor for pagination")

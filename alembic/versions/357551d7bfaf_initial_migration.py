@@ -25,6 +25,7 @@ def upgrade() -> None:
     op.create_table(
         "game",
         sa.Column("id", sa.BigInteger(), nullable=False),
+        sa.Column("recent_cursor", sa.String(), nullable=True),
         sa.Column(
             "created_at",
             postgresql.TIMESTAMP(),
@@ -95,7 +96,6 @@ def upgrade() -> None:
         sa.Column("total_positive", sa.Integer(), nullable=False),
         sa.Column("total_negative", sa.Integer(), nullable=False),
         sa.Column("total_reviews", sa.Integer(), nullable=False),
-        sa.Column("cursor", sa.String(), nullable=True),
         sa.Column(
             "created_at",
             postgresql.TIMESTAMP(),
