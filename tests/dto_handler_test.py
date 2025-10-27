@@ -62,6 +62,7 @@ steam_reviews_strat = st.fixed_dictionaries(
         "success": success_strat,
         "query_summary": query_summary_strat,
         "reviews": st.lists(review_strat, min_size=0, max_size=10),
+        "cursor": st.text(min_size=1, max_size=32),
     }
 )
 

@@ -10,7 +10,6 @@ class Game(CommonMixin, TimestampMixin, BaseModel):
     """Represents a Steam game with its metadata and reviews."""
 
     id = Column(BigInteger, primary_key=True)
-    recent_cursor = Column(BigInteger, nullable=True)
 
     review_query_summary = relationship(
         "ReviewQuerySummary",
