@@ -5,7 +5,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class UserGameStat(BaseModel):
+class UserGameStatDTO(BaseModel):
     """User Game Statistics Data Transfer Object."""
 
     id: int
