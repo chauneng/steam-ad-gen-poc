@@ -19,11 +19,12 @@ class DatabaseManager:
     _connections: Dict[str, AsyncEngine]
     _session_factories: Dict[str, async_sessionmaker[AsyncSession]]
 
-    def __init__(self, config: DatabaseConfig) -> None:
+    def __init__(self, config: Dict[str, str]) -> None:
         """Initialize the DatabaseManager."""
         self._connections = {}
         self._session_factories = {}
-        self.create_connection("default", config)
+        db_config = DatabaseConfig.model_validate(config)
+        self.create_connection("default", db_config)
 
     def create_db_url(self, db_config: DatabaseConfig) -> str:
         """
