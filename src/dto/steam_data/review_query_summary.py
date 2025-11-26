@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 
 class ReviewQuerySummaryDTO(BaseModel):
     """Result from querying Steam for review summary data."""
+    model_config = {"from_attributes": True}
 
     id: int = Field(..., description="Review Query Summary ID")
     game_id: int = Field(..., description="Steam App ID of the game")
