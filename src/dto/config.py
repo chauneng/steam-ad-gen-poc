@@ -59,6 +59,7 @@ class DatabaseConfig(BaseModel):
 
 class HttpClientConfig(BaseModel):
     name: str = Field("default", description="클라이언트 이름")
+    timeout_default: float = Field(5, ge=0, description="초 단위")
     timeout_connect: float = Field(..., ge=0, description="초 단위")
     timeout_read: float = Field(..., ge=0, description="초 단위")
     max_connections: int = Field(..., ge=1)

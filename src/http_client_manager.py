@@ -2,7 +2,7 @@ from typing import Dict
 import httpx
 import asyncio
 import logging
-from dto.config import HttpClientConfig
+from src.dto.config import HttpClientConfig
 
 logger = logging.getLogger(__name__)
 
@@ -12,28 +12,32 @@ class HttpClientManager:
     HTTP 통신을 위한 클라이언트를 관리한다.
     """
 
-    def __init__(self, config: HttpClientConfig) -> None:
+    def __init__(self, config: Dict[str, str | int | bool | Dict[str, str]]) -> None:
         self._clients: Dict[str, httpx.AsyncClient] = {}
         self._lock = asyncio.Lock()
-        self._make_client(config)
+        http_client_configs = HttpClientConfig.model_validate(config)
+        self._make_client(http_client_configs)
 
     def _make_client(self, config: HttpClientConfig) -> httpx.AsyncClient:
         """httpx.AsyncClient 생성"""
         if config.name in self._clients:
             raise ValueError(f"HTTP client with name '{config.name}' already exists.")
         timeout = httpx.Timeout(
-            connect=config.timeout_connect, read=config.timeout_read
+            timeout=config.timeout_default,
+            connect=config.timeout_connect, read=config.timeout_read,
         )
         limits = httpx.Limits(
             max_connections=config.max_connections,
             max_keepalive_connections=config.max_keepalive_connections,
         )
-        return httpx.AsyncClient(
+        client = httpx.AsyncClient(
             timeout=timeout,
             limits=limits,
             headers=config.headers,
             http2=config.http2,
         )
+        self._clients[config.name] = client
+        return client
 
     def get_client(self, name: str = "default") -> httpx.AsyncClient:
         """named client 반환"""
